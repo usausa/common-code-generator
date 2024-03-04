@@ -18,7 +18,7 @@
     <CommonCodeGeneratorToStringNullLiteral>null</CommonCodeGeneratorToStringNullLiteral>
   </PropertyGroup>
 
-  <Import Project="..\CommonCodeGenerator.SourceGenerator\build\CommonCodeGenerator.props" />
+  <Import Project="..\CommonCodeGenerator.SourceGenerator\build\CommonCodeGenerator.SourceGenerator.props" />
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.1">
