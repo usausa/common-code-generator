@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommonCodeGenerator.SourceGenerator\CommonCodeGenerator.SourceGenerator.csproj" />
+    <ProjectReference Include="..\CommonCodeGenerator.SourceGenerator\CommonCodeGenerator.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\CommonCodeGenerator\CommonCodeGenerator.csproj" />
   </ItemGroup>
 
