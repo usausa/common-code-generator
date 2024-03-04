@@ -1,6 +1,7 @@
 namespace CommonCodeGenerator.SourceGenerator;
 
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Text;
 
 using Microsoft.CodeAnalysis;
@@ -9,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 [Generator]
-public sealed class Generator : IIncrementalGenerator
+public sealed class ToStringGenerator : IIncrementalGenerator
 {
     // ------------------------------------------------------------
     // Generator
@@ -24,10 +25,10 @@ public sealed class Generator : IIncrementalGenerator
                 static (context, _) => GetTargetSyntax(context))
             .SelectMany(static (x, _) => x is not null ? ImmutableArray.Create(x) : [])
             .Collect();
-        var settingProvider = context.AnalyzerConfigOptionsProvider
-            .Select(static (provider, _) => GetSettings(provider));
+        var optionProvider = context.AnalyzerConfigOptionsProvider
+            .Select(static (provider, _) => GetOptions(provider));
 
-        var providers = compilationProvider.Combine(classes).Combine(settingProvider);
+        var providers = compilationProvider.Combine(classes).Combine(optionProvider);
 
         context.RegisterImplementationSourceOutput(
             providers,
@@ -56,26 +57,60 @@ public sealed class Generator : IIncrementalGenerator
         return classDeclarationSyntax;
     }
 
-    private static Dictionary<string, string> GetSettings(AnalyzerConfigOptionsProvider provider)
+    private static GeneratorOptions GetOptions(AnalyzerConfigOptionsProvider provider)
     {
-        var settings = new Dictionary<string, string>();
-        AddSettings(settings, provider.GlobalOptions, "Mode");
-        return settings;
+        var options = new GeneratorOptions();
+
+        // Mode
+        var mode = GetPropertyValue<string>(provider.GlobalOptions, "Mode");
+        if (String.IsNullOrEmpty(mode) || String.Equals(mode, "Default", StringComparison.OrdinalIgnoreCase))
+        {
+            options.OutputClassName = true;
+        }
+
+        // OutputClassName
+        var outputClassName = GetPropertyValue<bool?>(provider.GlobalOptions, "OutputClassName");
+        if (outputClassName.HasValue)
+        {
+            options.OutputClassName = outputClassName.Value;
+        }
+
+        return options;
     }
 
-    private static void AddSettings(Dictionary<string, string> settings, AnalyzerConfigOptions options, string key)
+    private static T GetPropertyValue<T>(AnalyzerConfigOptions options, string key)
     {
-        if (options.TryGetValue($"build_property.CommonCodeGenerator_{key}", out var value))
+        if (options.TryGetValue($"build_property.CommonCodeGenerator{key}", out var value))
         {
-            settings[key] = value;
+#pragma warning disable CA1031
+            try
+            {
+                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
+            }
+            catch
+            {
+                // Ignore
+            }
+#pragma warning restore CA1031
         }
+
+        return default!;
+    }
+
+    // ------------------------------------------------------------
+    // Options
+    // ------------------------------------------------------------
+
+    private sealed class GeneratorOptions
+    {
+        public bool OutputClassName { get; set; }
     }
 
     // ------------------------------------------------------------
     // Builder
     // ------------------------------------------------------------
 
-    private static void Execute(SourceProductionContext context, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes, Dictionary<string, string> settings)
+    private static void Execute(SourceProductionContext context, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes, GeneratorOptions options)
     {
         var enumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.IEnumerable");
 
@@ -126,8 +161,11 @@ public sealed class Generator : IIncrementalGenerator
             source.AppendLine("        public override string ToString()");
             source.AppendLine("        {");
             source.AppendLine("            var handler = new global::System.Runtime.CompilerServices.DefaultInterpolatedStringHandler(0, 0, default, stackalloc char[256]);");
-            source.AppendLine($"            handler.AppendLiteral(\"{className}\");");
-            source.AppendLine("            handler.AppendLiteral(\" { \");");
+            if (options.OutputClassName)
+            {
+                source.AppendLine($"            handler.AppendLiteral(\"{className} \");");
+            }
+            source.AppendLine("            handler.AppendLiteral(\"{ \");");
 
             var firstProperty = true;
             foreach (var property in properties)

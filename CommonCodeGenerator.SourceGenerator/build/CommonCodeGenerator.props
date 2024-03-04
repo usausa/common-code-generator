@@ -1,7 +1,11 @@
 <Project>
 
   <ItemGroup>
-    <CompilerVisibleProperty Include="CommonCodeGenerator_Mode" />
+    <CompilerVisibleProperty Include="CommonCodeGeneratorMode" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <CommonCodeGeneratorMode>Default</CommonCodeGeneratorMode>
+  </PropertyGroup>
 
 </Project>
