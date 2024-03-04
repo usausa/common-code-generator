@@ -6,4 +6,11 @@
     <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>CommonCodeGenerator</PackageId>
+    <Title>CommonCodeGenerator</Title>
+    <Description>Common code generator.</Description>
+    <PackageTags>generator</PackageTags>
+  </PropertyGroup>
+
 </Project>
