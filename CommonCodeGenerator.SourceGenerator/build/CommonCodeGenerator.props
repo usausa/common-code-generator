@@ -1,11 +1,13 @@
 <Project>
 
   <ItemGroup>
-    <CompilerVisibleProperty Include="CommonCodeGeneratorMode" />
+    <CompilerVisibleProperty Include="CommonCodeGeneratorToStringMode" />
+    <CompilerVisibleProperty Include="CommonCodeGeneratorToStringOutputClassName" />
+    <CompilerVisibleProperty Include="CommonCodeGeneratorToStringNullLiteral" />
   </ItemGroup>
 
   <PropertyGroup>
-    <CommonCodeGeneratorMode>Default</CommonCodeGeneratorMode>
+    <CommonCodeGeneratorToStringMode>Default</CommonCodeGeneratorToStringMode>
   </PropertyGroup>
 
 </Project>

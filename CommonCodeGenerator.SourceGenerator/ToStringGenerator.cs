@@ -1,7 +1,6 @@
 namespace CommonCodeGenerator.SourceGenerator;
 
 using System.Collections.Immutable;
-using System.Globalization;
 using System.Text;
 
 using Microsoft.CodeAnalysis;
@@ -62,39 +61,27 @@ public sealed class ToStringGenerator : IIncrementalGenerator
         var options = new GeneratorOptions();
 
         // Mode
-        var mode = GetPropertyValue<string>(provider.GlobalOptions, "Mode");
+        var mode = OptionHelper.GetPropertyValue<string?>(provider.GlobalOptions, "ToStringMode");
         if (String.IsNullOrEmpty(mode) || String.Equals(mode, "Default", StringComparison.OrdinalIgnoreCase))
         {
             options.OutputClassName = true;
         }
 
         // OutputClassName
-        var outputClassName = GetPropertyValue<bool?>(provider.GlobalOptions, "OutputClassName");
+        var outputClassName = OptionHelper.GetPropertyValue<bool?>(provider.GlobalOptions, "ToStringOutputClassName");
         if (outputClassName.HasValue)
         {
             options.OutputClassName = outputClassName.Value;
         }
 
-        return options;
-    }
-
-    private static T GetPropertyValue<T>(AnalyzerConfigOptions options, string key)
-    {
-        if (options.TryGetValue($"build_property.CommonCodeGenerator{key}", out var value))
+        // NullLiteral
+        var nullLiteral = OptionHelper.GetPropertyValue<string?>(provider.GlobalOptions, "ToStringNullLiteral");
+        if (!String.IsNullOrEmpty(nullLiteral))
         {
-#pragma warning disable CA1031
-            try
-            {
-                return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
-            }
-            catch
-            {
-                // Ignore
-            }
-#pragma warning restore CA1031
+            options.NullLiteral = nullLiteral;
         }
 
-        return default!;
+        return options;
     }
 
     // ------------------------------------------------------------
@@ -104,6 +91,8 @@ public sealed class ToStringGenerator : IIncrementalGenerator
     private sealed class GeneratorOptions
     {
         public bool OutputClassName { get; set; }
+
+        public string? NullLiteral { get; set; }
     }
 
     // ------------------------------------------------------------
@@ -113,8 +102,6 @@ public sealed class ToStringGenerator : IIncrementalGenerator
     private static void Execute(SourceProductionContext context, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes, GeneratorOptions options)
     {
         var enumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.IEnumerable");
-
-        // TODO setting
 
         var filename = new StringBuilder();
         var source = new StringBuilder();
@@ -176,7 +163,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
                 }
                 else
                 {
-                    source.AppendLine($"            handler.AppendLiteral(\", \");");
+                    source.AppendLine("            handler.AppendLiteral(\", \");");
                 }
 
                 var literal = property.Name + " = ";
@@ -185,23 +172,39 @@ public sealed class ToStringGenerator : IIncrementalGenerator
                 if (!property.Type.SpecialType.Equals(SpecialType.System_String) &&
                     property.Type.AllInterfaces.Any(x => SymbolEqualityComparer.Default.Equals(x, enumerableSymbol)))
                 {
-                    // TODO null
                     source.AppendLine($"            if ({property.Name} is not null)");
                     source.AppendLine("            {");
                     source.AppendLine("                handler.AppendLiteral(\"[\");");
                     source.AppendLine($"                handler.AppendLiteral(String.Join(\", \", System.Linq.Enumerable.Select({property.Name}, static x => x.ToString())));");
                     source.AppendLine("                handler.AppendLiteral(\"]\");");
                     source.AppendLine("            }");
+                    if (!String.IsNullOrEmpty(options.NullLiteral))
+                    {
+                        source.AppendLine("            else");
+                        source.AppendLine("            {");
+                        source.AppendLine($"                handler.AppendLiteral(\"{options.NullLiteral}\");");
+                        source.AppendLine("            }");
+                    }
                 }
                 else
                 {
                     if (property.Type.IsReferenceType)
                     {
-                        // TODO null
-                        source.AppendLine($"            if ({property.Name} is not null)");
-                        source.AppendLine("            {");
-                        source.AppendLine($"                handler.AppendFormatted({property.Name});");
-                        source.AppendLine("            }");
+                        if (!String.IsNullOrEmpty(options.NullLiteral))
+                        {
+                            source.AppendLine($"            if ({property.Name} is not null)");
+                            source.AppendLine("            {");
+                            source.AppendLine($"                handler.AppendFormatted({property.Name});");
+                            source.AppendLine("            }");
+                            source.AppendLine("            else");
+                            source.AppendLine("            {");
+                            source.AppendLine($"                handler.AppendLiteral(\"{options.NullLiteral}\");");
+                            source.AppendLine("            }");
+                        }
+                        else
+                        {
+                            source.AppendLine($"            handler.AppendFormatted({property.Name});");
+                        }
                     }
                     else
                     {

@@ -13,11 +13,10 @@
     <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
 
-  <!--
   <PropertyGroup>
-    <CommonCodeGeneratorMode>Default</CommonCodeGeneratorMode>
+    <CommonCodeGeneratorToStringOutputClassName>false</CommonCodeGeneratorToStringOutputClassName>
+    <CommonCodeGeneratorToStringNullLiteral>null</CommonCodeGeneratorToStringNullLiteral>
   </PropertyGroup>
-  -->
 
   <Import Project="..\CommonCodeGenerator.SourceGenerator\build\CommonCodeGenerator.props" />
 

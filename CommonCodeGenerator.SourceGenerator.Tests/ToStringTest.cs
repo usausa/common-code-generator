@@ -6,10 +6,10 @@ public class ToStringTest
     public void Test1()
     {
         Assert.Equal(
-            "Data { Id = 123, Name = xyz, Values = [1, 2] }",
+            "{ Id = 123, Name = xyz, Values = [1, 2] }",
             new Data { Id = 123, Name = "xyz", Values = [1, 2] }.ToString());
         Assert.Equal(
-            "Data { Id = 123, Name = xyz, Values =  }",
+            "{ Id = 123, Name = xyz, Values = null }",
             new Data { Id = 123, Name = "xyz" }.ToString());
     }
 }
