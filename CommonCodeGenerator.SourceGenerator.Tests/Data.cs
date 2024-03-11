@@ -9,5 +9,8 @@ public partial class Data
     public string Name { get; set; } = default!;
 
     public int[] Values { get; set; } = default!;
+
+    [IgnoreToString]
+    public int Ignore { get; set; }
 }
 #pragma warning restore CA1819

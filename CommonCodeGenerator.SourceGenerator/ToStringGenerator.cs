@@ -124,7 +124,11 @@ public sealed class ToStringGenerator : IIncrementalGenerator
             var currentSymbol = classSymbol;
             while (currentSymbol != null)
             {
-                properties.AddRange(currentSymbol.GetMembers().OfType<IPropertySymbol>());
+                properties.AddRange(
+                    currentSymbol.GetMembers()
+                        .OfType<IPropertySymbol>()
+                        .Where(x => !x.GetAttributes()
+                            .Any(attr => attr.AttributeClass?.ToDisplayString() == "CommonCodeGenerator.IgnoreToStringAttribute")));
                 currentSymbol = currentSymbol.BaseType;
             }
 
