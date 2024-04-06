@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <PackageId>CommonCodeGenerator.SourceGenerator</PackageId>
-    <Title>AmazonLambdaExtension.SourceGenerator</Title>
+    <Title>CommonCodeGenerator.SourceGenerator</Title>
     <Description>Common code generator.</Description>
     <PackageTags>generator</PackageTags>
   </PropertyGroup>
