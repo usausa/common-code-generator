@@ -20,7 +20,7 @@ Add reference to CommonCodeGenerator and CommonCodeGenerator.SourceGenerator to 
 
 ### Source
 
-```cs
+```csharp
 [GenerateToString]
 public partial class Data
 {
@@ -37,8 +37,7 @@ public partial class Data
 
 ### Result
 
-```cs
-
+```csharp
 var data = new Data { Id = 123, Name = "xyz", Values = [1, 2] };
 var str = data.ToString();
 Assert.Equal("{ Id = 123, Name = xyz, Values = [1, 2] }", str);
