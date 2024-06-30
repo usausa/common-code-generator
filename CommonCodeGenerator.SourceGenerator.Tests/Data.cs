@@ -14,3 +14,9 @@ public partial class Data
     public int Ignore { get; set; }
 }
 #pragma warning restore CA1819
+
+[GenerateToString]
+public partial class GenericData<T>
+{
+    public T Value { get; set; } = default!;
+}

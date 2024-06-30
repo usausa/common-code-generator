@@ -118,7 +118,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
             var ns = classSymbol.ContainingNamespace.IsGlobalNamespace
                 ? string.Empty
                 : classSymbol.ContainingNamespace.ToDisplayString();
-            var className = classDeclarationSyntax.Identifier.Text;
+            var className = classDeclarationSyntax.GetClassName();
 
             var properties = new List<IPropertySymbol>();
             var currentSymbol = classSymbol;
@@ -192,7 +192,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
                 }
                 else
                 {
-                    if (property.Type.IsReferenceType)
+                    if (property.Type.IsReferenceType || property.Type.IsGenericType())
                     {
                         if (!String.IsNullOrEmpty(options.NullLiteral))
                         {
@@ -243,7 +243,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
             buffer.Append('_');
         }
 
-        buffer.Append(className);
+        buffer.Append(className.Replace('<', '[').Replace('>', ']'));
         buffer.Append("_ToString.g.cs");
 
         return buffer.ToString();
