@@ -8,8 +8,8 @@ Add reference to CommonCodeGenerator and CommonCodeGenerator.SourceGenerator to 
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="CommonCodeGenerator" Version="0.2.0" />
-    <PackageReference Include="CommonCodeGenerator.SourceGenerator" Version="0.2.0">
+    <PackageReference Include="CommonCodeGenerator" Version="0.3.0" />
+    <PackageReference Include="CommonCodeGenerator.SourceGenerator" Version="0.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
