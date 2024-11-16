@@ -1,6 +1,6 @@
 # CommonCodeGenerator
 
-[![NuGet Badge](https://buildstats.info/nuget/CommonCodeGenerator)](https://www.nuget.org/packages/CommonCodeGenerator/)
+[![NuGet](https://img.shields.io/nuget/v/CommonCodeGenerator.svg)](https://www.nuget.org/packages/CommonCodeGenerator)
 
 ## Reference
 
