@@ -1,6 +1,7 @@
 namespace CommonCodeGenerator;
 
 #pragma warning disable CA1819
+// ReSharper disable once PartialTypeWithSinglePart
 [GenerateToString]
 public partial class Data
 {
@@ -15,6 +16,7 @@ public partial class Data
 }
 #pragma warning restore CA1819
 
+// ReSharper disable once PartialTypeWithSinglePart
 [GenerateToString]
 public partial class GenericData<T>
 {
