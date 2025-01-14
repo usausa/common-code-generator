@@ -99,9 +99,10 @@ public sealed class ToStringGenerator : IIncrementalGenerator
     // Builder
     // ------------------------------------------------------------
 
+    // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
     private static void Execute(SourceProductionContext context, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes, GeneratorOptions options)
     {
-        var enumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.IEnumerable");
+        var genericEnumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.IEnumerable`1");
 
         var filename = new StringBuilder();
         var source = new StringBuilder();
@@ -173,13 +174,27 @@ public sealed class ToStringGenerator : IIncrementalGenerator
                 var literal = property.Name + " = ";
                 source.AppendLine($"            handler.AppendLiteral(\"{literal}\");");
 
-                if (!property.Type.SpecialType.Equals(SpecialType.System_String) &&
-                    property.Type.AllInterfaces.Any(x => SymbolEqualityComparer.Default.Equals(x, enumerableSymbol)))
+                var (isEnumerable, isNullable) = GetPropertyType(property.Type, genericEnumerableSymbol);
+                if (isEnumerable)
                 {
                     source.AppendLine($"            if ({property.Name} is not null)");
                     source.AppendLine("            {");
                     source.AppendLine("                handler.AppendLiteral(\"[\");");
-                    source.AppendLine($"                handler.AppendLiteral(String.Join(\", \", System.Linq.Enumerable.Select({property.Name}, static x => x.ToString())));");
+                    if (isNullable)
+                    {
+                        if (!String.IsNullOrEmpty(options.NullLiteral))
+                        {
+                            source.AppendLine($"                handler.AppendLiteral(String.Join(\", \", System.Linq.Enumerable.Select({property.Name}, static x => x?.ToString() ?? \"{options.NullLiteral}\")));");
+                        }
+                        else
+                        {
+                            source.AppendLine($"                handler.AppendLiteral(String.Join(\", \", System.Linq.Enumerable.Select({property.Name}, static x => x?.ToString())));");
+                        }
+                    }
+                    else
+                    {
+                        source.AppendLine($"                handler.AppendLiteral(String.Join(\", \", System.Linq.Enumerable.Select({property.Name}, static x => x.ToString())));");
+                    }
                     source.AppendLine("                handler.AppendLiteral(\"]\");");
                     source.AppendLine("            }");
                     if (!String.IsNullOrEmpty(options.NullLiteral))
@@ -192,7 +207,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
                 }
                 else
                 {
-                    if (property.Type.IsReferenceType || property.Type.IsGenericType())
+                    if (isNullable)
                     {
                         if (!String.IsNullOrEmpty(options.NullLiteral))
                         {
@@ -231,6 +246,30 @@ public sealed class ToStringGenerator : IIncrementalGenerator
 
             source.Clear();
         }
+    }
+    // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+
+    private static (bool IsEnumerable, bool IsNullable) GetPropertyType(ITypeSymbol typeSymbol, INamedTypeSymbol? genericEnumerableSymbol)
+    {
+        if (!typeSymbol.SpecialType.Equals(SpecialType.System_String))
+        {
+            if (typeSymbol is IArrayTypeSymbol arrayTypeSymbol)
+            {
+                var elementType = arrayTypeSymbol.ElementType;
+                return (true, elementType.IsReferenceType || elementType.IsGenericType());
+            }
+
+            foreach (var @interface in typeSymbol.AllInterfaces)
+            {
+                if (SymbolEqualityComparer.Default.Equals(@interface, genericEnumerableSymbol))
+                {
+                    var elementType = @interface.TypeArguments[0];
+                    return (true, elementType.IsReferenceType || elementType.IsGenericType());
+                }
+            }
+        }
+
+        return (false, typeSymbol.IsReferenceType || typeSymbol.IsGenericType());
     }
 
     private static string MakeRegistryFilename(StringBuilder buffer, string ns, string className)
