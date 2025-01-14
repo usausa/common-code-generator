@@ -9,7 +9,9 @@ public partial class Data
 
     public string Name { get; set; } = default!;
 
-    public int[] Values { get; set; } = default!;
+    public int[] IntValues { get; set; } = default!;
+
+    public string?[] StringValues { get; set; } = default!;
 
     [IgnoreToString]
     public int Ignore { get; set; }
