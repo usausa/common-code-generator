@@ -102,7 +102,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
     // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
     private static void Execute(SourceProductionContext context, Compilation compilation, ImmutableArray<ClassDeclarationSyntax> classes, GeneratorOptions options)
     {
-        var genericEnumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.IEnumerable`1");
+        var genericEnumerableSymbol = compilation.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
 
         var filename = new StringBuilder();
         var source = new StringBuilder();
@@ -261,7 +261,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
 
             foreach (var @interface in typeSymbol.AllInterfaces)
             {
-                if (SymbolEqualityComparer.Default.Equals(@interface, genericEnumerableSymbol))
+                if (SymbolEqualityComparer.Default.Equals(@interface.OriginalDefinition, genericEnumerableSymbol))
                 {
                     var elementType = @interface.TypeArguments[0];
                     return (true, elementType.IsReferenceType || elementType.IsGenericType());
