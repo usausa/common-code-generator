@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.targets = Directory.Build.targets
 		LICENSE = LICENSE
 		README.md = README.md
+		test.runsettings = test.runsettings
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCodeGenerator.SourceGenerator", "CommonCodeGenerator.SourceGenerator\CommonCodeGenerator.SourceGenerator.csproj", "{0314460C-82D2-4488-882D-2AD13D08BD4D}"
