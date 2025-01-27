@@ -1,6 +1,6 @@
 namespace BunnyTail.CommonCode.Generator.Models;
 
-internal record class GeneratorOptions
+internal record GeneratorOptions
 {
     public bool OutputClassName { get; set; }
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
     <CodeAnalysisRuleSet>..\Analyzers.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>$(NoWarn);NU5129</NoWarn>
+    <NoWarn>$(NoWarn);NU5118;NU5129</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup>
