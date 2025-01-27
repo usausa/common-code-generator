@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "CommonCodeGenerator.SourceGenerator.Tests": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\CommonCodeGenerator.SourceGenerator.Tests\\CommonCodeGenerator.SourceGenerator.Tests.csproj"
-    }
-  }
-}

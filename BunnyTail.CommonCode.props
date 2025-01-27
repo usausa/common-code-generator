@@ -6,8 +6,4 @@
     <CompilerVisibleProperty Include="CommonCodeGeneratorToStringNullLiteral" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <CommonCodeGeneratorToStringMode>Default</CommonCodeGeneratorToStringMode>
-  </PropertyGroup>
-
 </Project>

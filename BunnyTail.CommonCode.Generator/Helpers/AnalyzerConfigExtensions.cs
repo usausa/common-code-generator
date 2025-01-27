@@ -1,14 +1,14 @@
-namespace CommonCodeGenerator.SourceGenerator;
+namespace BunnyTail.CommonCode.Generator.Helpers;
 
 using System.ComponentModel;
 
 using Microsoft.CodeAnalysis.Diagnostics;
 
-internal static class OptionHelper
+internal static class AnalyzerConfigExtensions
 {
-    public static T GetPropertyValue<T>(AnalyzerConfigOptions options, string key)
+    public static T GetValue<T>(this AnalyzerConfigOptions options, string key)
     {
-        if (options.TryGetValue($"build_property.CommonCodeGenerator{key}", out var value))
+        if (options.TryGetValue($"build_property.{key}", out var value))
         {
             if (typeof(T) == typeof(string))
             {

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BunnyTail.CommonCode.Generator": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\BunnyTail.CommonCode.Tests\\BunnyTail.CommonCode.Tests.csproj"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-namespace CommonCodeGenerator;
+namespace BunnyTail.CommonCode;
 
 public class ToStringTest
 {

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+    <CodeAnalysisRuleSet>..\Analyzers.ruleset</CodeAnalysisRuleSet>
+    <NoWarn>$(NoWarn);NU5129</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackBuildOutputs</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+
+  <Target Name="PackBuildOutputs" DependsOnTargets="SatelliteDllsProjectOutputGroup;DebugSymbolsProjectOutputGroup">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="..\BunnyTail.CommonCode.props" PackagePath="build" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\BunnyTail.CommonCode.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+  </Target>
+
+  <PropertyGroup>
+    <PackageId>BunnyTail.CommonCode</PackageId>
+    <Title>BunnyTail.CommonCode</Title>
+    <Description>Template source generator.</Description>
+    <PackageTags>sourcegenerator</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BunnyTail.CommonCode.Generator\BunnyTail.CommonCode.Generator.csproj" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

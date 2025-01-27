@@ -1,4 +1,4 @@
-namespace CommonCodeGenerator;
+namespace BunnyTail.CommonCode;
 
 #pragma warning disable CA1819
 // ReSharper disable once PartialTypeWithSinglePart
