@@ -21,7 +21,7 @@
   <PropertyGroup>
     <PackageId>BunnyTail.CommonCode</PackageId>
     <Title>BunnyTail.CommonCode</Title>
-    <Description>Template source generator.</Description>
+    <Description>Common code source generator.</Description>
     <PackageTags>sourcegenerator</PackageTags>
   </PropertyGroup>
 
