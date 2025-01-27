@@ -1,6 +1,6 @@
-# CommonCodeGenerator
+# BunnyTail.CommonCode
 
-[![NuGet](https://img.shields.io/nuget/v/CommonCodeGenerator.svg)](https://www.nuget.org/packages/CommonCodeGenerator)
+[![NuGet](https://img.shields.io/nuget/v/BunnyTail.CommonCode.svg)](https://www.nuget.org/packages/BunnyTail.CommonCode)
 
 ## Reference
 
@@ -8,7 +8,7 @@ Add reference to CommonCodeGenerator and CommonCodeGenerator.SourceGenerator to 
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="CommonCodeGenerator" Version="0.3.0" />
+    <PackageReference Include="BunnyTail.CommonCode" Version="1.1.0" />
   </ItemGroup>
 ```
 
