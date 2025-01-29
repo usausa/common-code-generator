@@ -77,10 +77,7 @@ public sealed class ToStringGenerator : IIncrementalGenerator
     private static Result<TypeModel> GetTypeModel(GeneratorAttributeSyntaxContext context)
     {
         var syntax = (ClassDeclarationSyntax)context.TargetNode;
-        if (context.SemanticModel.GetDeclaredSymbol(syntax) is not { } symbol)
-        {
-            return Results.Error<TypeModel>(null);
-        }
+        var symbol = (INamedTypeSymbol)context.TargetSymbol;
 
         if (!syntax.Modifiers.Any(static x => x.IsKind(SyntaxKind.PartialKeyword)))
         {
