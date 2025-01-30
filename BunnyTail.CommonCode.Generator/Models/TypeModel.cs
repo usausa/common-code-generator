@@ -1,6 +1,6 @@
 namespace BunnyTail.CommonCode.Generator.Models;
 
-using BunnyTail.CommonCode.Generator.Helpers;
+using SourceGenerateHelper;
 
 internal sealed record TypeModel(
     string Namespace,

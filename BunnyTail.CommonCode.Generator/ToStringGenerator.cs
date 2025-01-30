@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.Text;
 
-using BunnyTail.CommonCode.Generator.Helpers;
 using BunnyTail.CommonCode.Generator.Models;
 
 using Microsoft.CodeAnalysis;
@@ -12,6 +11,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+
+using SourceGenerateHelper;
 
 [Generator]
 public sealed class ToStringGenerator : IIncrementalGenerator
@@ -145,13 +146,13 @@ public sealed class ToStringGenerator : IIncrementalGenerator
 
     private static void Execute(SourceProductionContext context, GeneratorOptions options, ImmutableArray<Result<TypeModel>> types)
     {
-        foreach (var info in types.SelectPart(static x => x.Error))
+        foreach (var info in types.SelectError())
         {
             context.ReportDiagnostic(info);
         }
 
         var builder = new SourceBuilder();
-        foreach (var type in types.SelectPart(static x => x.Value))
+        foreach (var type in types.SelectValue())
         {
             context.CancellationToken.ThrowIfCancellationRequested();
 
