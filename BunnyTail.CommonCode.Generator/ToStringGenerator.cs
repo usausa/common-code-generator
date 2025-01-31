@@ -113,7 +113,6 @@ public sealed class ToStringGenerator : IIncrementalGenerator
         var (hasElements, isNullAssignable) = GetPropertyType(symbol.Type);
         return new PropertyModel(
             symbol.Name,
-            symbol.Type.ToDisplayString(),
             hasElements,
             isNullAssignable);
     }
