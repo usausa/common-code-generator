@@ -8,7 +8,7 @@ Add reference to CommonCodeGenerator and CommonCodeGenerator.SourceGenerator to 
 
 ```xml
   <ItemGroup>
-    <PackageReference Include="BunnyTail.CommonCode" Version="1.1.0" />
+    <PackageReference Include="BunnyTail.CommonCode" Version="1.2.0" />
   </ItemGroup>
 ```
 
