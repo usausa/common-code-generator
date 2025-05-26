@@ -12,7 +12,9 @@
     <File Path="README.md" />
     <File Path="test.runsettings" />
   </Folder>
-  <Project Path="BunnyTail.CommonCode/BunnyTail.CommonCode.csproj" />
+  <Project Path="BunnyTail.CommonCode/BunnyTail.CommonCode.csproj">
+    <BuildDependency Project="BunnyTail.CommonCode.Generator/BunnyTail.CommonCode.Generator.csproj" />
+  </Project>
   <Project Path="BunnyTail.CommonCode.Generator/BunnyTail.CommonCode.Generator.csproj" />
   <Project Path="BunnyTail.CommonCode.Tests/BunnyTail.CommonCode.Tests.csproj" />
 </Solution>
