@@ -16,11 +16,13 @@
       </Exclude>
     </Attributes>
 
+    <!--
     <Sources>
       <Exclude>
         <Source>.*\\[^\\]*\.g\.cs</Source>
       </Exclude>
     </Sources>
+    -->
 
     <!--
     <Functions>
