@@ -3,7 +3,7 @@
 
   <Format>cobertura</Format>
 
-  <IncludeTestAssembly>false</IncludeTestAssembly>
+  <IncludeTestAssembly>true</IncludeTestAssembly>
   <DeterministicReport>true</DeterministicReport>
 
   <CodeCoverage>
