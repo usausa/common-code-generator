@@ -6,11 +6,11 @@
     <File Path="Analyzers.ruleset" />
     <File Path="BunnyTail.CommonCode.props" />
     <File Path="BunnyTail.CommonCode.sln.DotSettings" />
+    <File Path="CodeCoverage.runsettings" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Build.targets" />
     <File Path="LICENSE" />
     <File Path="README.md" />
-    <File Path="test.runsettings" />
   </Folder>
   <Project Path="BunnyTail.CommonCode/BunnyTail.CommonCode.csproj">
     <BuildDependency Project="BunnyTail.CommonCode.Generator/BunnyTail.CommonCode.Generator.csproj" />
