@@ -96,7 +96,10 @@ public sealed class ToStringGenerator : IIncrementalGenerator
             properties.AddRange(
                 currentSymbol.GetMembers()
                     .OfType<IPropertySymbol>()
-                    .Where(x => !x.GetAttributes().Any(attr => attr.AttributeClass?.ToDisplayString() == IgnoreAttributeName))
+                    .Where(x => (x.DeclaredAccessibility == Accessibility.Public) &&
+                                (x.GetMethod != null) &&
+                                !x.IsWriteOnly &&
+                                !x.GetAttributes().Any(attr => attr.AttributeClass?.ToDisplayString() == IgnoreAttributeName))
                     .Select(GetPropertyModel));
             currentSymbol = currentSymbol.BaseType;
         }
