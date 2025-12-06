@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 internal static class Diagnostics
 {
-    public static DiagnosticDescriptor InvalidTypeDefinition => new(
+    public static DiagnosticDescriptor InvalidTypeDefinition { get; } = new(
         id: "BTTS0001",
         title: "Invalid type definition",
         messageFormat: "Type must be partial. type=[{0}]",
